@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.j360.me/schema/j360datasource" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	targetNamespace="http://www.j360.me/schema/j360datasource"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.springframework.org/schema/beans" />
+	<xsd:element name="datasource">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence >
+						<xsd:element ref="database" maxOccurs="unbounded" minOccurs="0"/>
+					</xsd:sequence>
+					<xsd:attribute name="type" type="xsd:string"
+						use="required" />
+					<xsd:attribute name="weight" type="xsd:string"
+						use="required" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="database">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence>
+						<xsd:element ref="tablename" maxOccurs="unbounded" minOccurs="0"/>
+					</xsd:sequence>
+					<xsd:attribute name="databaseName" type="xsd:string"
+						use="required" />
+					<xsd:attribute name="datasourceId" type="xsd:string"
+						use="required" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="tablename">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="tablename" type="xsd:string"
+						use="required" />
+					<xsd:attribute name="prefixname" type="xsd:string"
+						use="required" />
+					<xsd:attribute name="count" type="xsd:int" use="required" />
+					<xsd:attribute name="tablefield" type="xsd:string"
+						use="required" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
