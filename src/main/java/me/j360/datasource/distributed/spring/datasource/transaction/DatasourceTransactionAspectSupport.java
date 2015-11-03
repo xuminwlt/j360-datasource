@@ -3,7 +3,7 @@
  */
 package me.j360.datasource.distributed.spring.datasource.transaction;
 
-import me.j360.datasource.distributed.spring.datasource.CustomerContextHolder;
+import me.j360.datasource.distributed.spring.datasource.DynamicContextHolder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.*;
@@ -25,6 +25,7 @@ import java.util.Properties;
  * @author liubing1
  *
  */
+@Deprecated
 public abstract class DatasourceTransactionAspectSupport implements BeanFactoryAware, InitializingBean {
 
 	// NOTE: This class must not implement Serializable because it serves as base
@@ -418,7 +419,7 @@ public abstract class DatasourceTransactionAspectSupport implements BeanFactoryA
 	 */
 	protected void cleanupTransactionInfo(TransactionInfo txInfo) {
 		if (txInfo != null) {
-			CustomerContextHolder.clearCustomerType();
+			DynamicContextHolder.clearDatabaseSchema();
 			txInfo.restoreThreadLocalStatus();
 		}
 		

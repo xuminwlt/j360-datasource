@@ -1,12 +1,5 @@
-/**
- * 
- */
-package me.j360.datasource.distributed.spring.datasource.transaction;
 
-/**
- * @author liubing1
- *
- */
+package me.j360.datasource.distributed.spring.datasource.transaction;
 
 import me.j360.datasource.distributed.readwritestragy.DatasourceRobin;
 import me.j360.datasource.distributed.readwritestragy.DatasourceServer;
@@ -32,12 +25,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-/**
- * 
- * @author liubing1
- *
- */
+@Deprecated
 public class MultDatasourceTransactionInterceptor extends DatasourceTransactionAspectSupport implements MethodInterceptor, Serializable {
 	
 	 

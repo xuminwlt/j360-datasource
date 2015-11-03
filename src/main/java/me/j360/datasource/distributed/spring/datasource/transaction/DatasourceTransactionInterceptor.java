@@ -1,12 +1,6 @@
-/**
- * 
- */
+
 package me.j360.datasource.distributed.spring.datasource.transaction;
 
-/**
- * @author liubing1
- *
- */
 
 import me.j360.datasource.distributed.route.DatasourceRoute;
 import me.j360.datasource.distributed.spring.config.schema.DatasourceSchema;
@@ -28,11 +22,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
-/**
- * 
- * @author liubing1
- *
- */
+@Deprecated
 public class DatasourceTransactionInterceptor extends DatasourceTransactionAspectSupport implements MethodInterceptor, Serializable {
 	
 	 
