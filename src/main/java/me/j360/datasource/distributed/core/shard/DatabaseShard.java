@@ -1,9 +1,8 @@
 
 package me.j360.datasource.distributed.core.shard;
 
-import me.j360.datasource.distributed.spring.config.schema.DatabaseSchema;
+import me.j360.datasource.distributed.core.loadbalance.ConsistentHashLoadBalance;
 
-import java.util.List;
 
 /**
  * Created with j360-datasource -> me.j360.datasource.distributed.core.shard
@@ -12,8 +11,12 @@ import java.util.List;
  * Time: 9:55
  * 说明：数据库名称哈希算法
  */
-public class DatabaseShard extends MurmHashShard<DatabaseSchema> {
-	public DatabaseShard(List<DatabaseSchema> shards) {
-		super(shards);
+
+@Deprecated
+public class DatabaseShard extends ConsistentHashLoadBalance {
+
+	public DatabaseShard() {
+
 	}
+
 }

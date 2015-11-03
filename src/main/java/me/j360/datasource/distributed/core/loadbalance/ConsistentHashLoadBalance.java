@@ -1,7 +1,5 @@
 package me.j360.datasource.distributed.core.loadbalance;
 
-import me.j360.datasource.distributed.core.shard.MurmHashShard;
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 /**
@@ -19,7 +17,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
         if(seed == null || seed.length() == 0){
             seed = "HASH-".concat(String.valueOf(ThreadLocalRandom.current().nextInt()));
         }
-        MurmHashShard<S> selector = new MurmHashShard<S>(shards);
-        return selector.getShardInfo(seed);
+        MurmHash<S> selector = new MurmHash<S>(shards);
+        return selector.getSelector(seed);
     }
 }

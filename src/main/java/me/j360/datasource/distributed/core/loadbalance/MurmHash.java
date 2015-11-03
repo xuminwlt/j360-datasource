@@ -1,4 +1,4 @@
-package me.j360.datasource.distributed.core.shard;
+package me.j360.datasource.distributed.core.loadbalance;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.TreeMap;
  * import com.google.guava
  * @see * https://github.com/google/guava/blob/master/guava/src/com/google/common/hash/Murmur3_32HashFunction.java
  */
-public class MurmHashShard<S> {
+public class MurmHash<S> {
 	
 	private TreeMap<Long, S> nodes; // 虚拟节点
 
@@ -24,7 +24,7 @@ public class MurmHashShard<S> {
 
 	private final int NODE_NUM = 64; // 每个机器节点关联的虚拟节点个数
 
-	public MurmHashShard(List<S> shards) {
+	public MurmHash(List<S> shards) {
 		super();
 		this.shards = shards;
 		init();
@@ -42,7 +42,7 @@ public class MurmHashShard<S> {
 
 	}
 
-	public S getShardInfo(String key) {
+	public S getSelector(String key) {
 
 		SortedMap<Long, S> tail = nodes.tailMap(hash(key)); // 沿环的顺时针找到一个虚拟节点
 		if (tail.size() == 0) {

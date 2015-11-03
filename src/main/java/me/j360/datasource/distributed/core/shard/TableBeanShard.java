@@ -1,5 +1,7 @@
 package me.j360.datasource.distributed.core.shard;
 
+import me.j360.datasource.distributed.core.loadbalance.ConsistentHashLoadBalance;
+import me.j360.datasource.distributed.core.loadbalance.MurmHashShard;
 import me.j360.datasource.distributed.core.shard.support.TableBean;
 
 import java.util.List;
@@ -10,9 +12,9 @@ import java.util.List;
  * Time: 9:55
  * 说明：Table表名称哈希算法
  */
-public  class TableBeanShard extends MurmHashShard<TableBean> {
-	public TableBeanShard(List<TableBean> shards) {
-		super(shards);
-	}
+@Deprecated
+public  class TableBeanShard extends ConsistentHashLoadBalance {
+	public TableBeanShard() {
 
+	}
 }

@@ -1,8 +1,11 @@
 package me.j360.datasource.distributed;
 
+import me.j360.datasource.distributed.core.loadbalance.AbstractLoadBalance;
+import me.j360.datasource.distributed.core.loadbalance.ConsistentHashLoadBalance;
 import me.j360.datasource.distributed.core.shard.DatabaseShard;
 import me.j360.datasource.distributed.core.shard.TableBeanShard;
 import me.j360.datasource.distributed.core.shard.support.TableBean;
+import me.j360.datasource.distributed.readwritestragy.DatasourceServer;
 import me.j360.datasource.distributed.route.support.TableNameBean;
 import me.j360.datasource.distributed.spring.config.schema.DatabaseSchema;
 import me.j360.datasource.distributed.spring.config.schema.DatasourceSchema;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with j360-datasource -> me.j360.datasource.distributed.utils;
@@ -21,18 +25,26 @@ import java.util.Set;
  * 说明：分布式数据源核心类,单例模式，获取配置中的数据源配置，懒加载模式，配置更新后需要重启，暂不支持分布式配置方案
  */
 public class J360Datasource {
-
 	private J360Datasource() {
 		
 	}
+	private J360Datasource(AbstractLoadBalance loadBalance) {
+		this.loadBalance = loadBalance;
+	}
+
+	private AbstractLoadBalance loadBalance;
 
 	private static class SingletonHolder {
-		static final J360Datasource instance = new J360Datasource();
+		static final J360Datasource instance = new J360Datasource(new ConsistentHashLoadBalance());
 	}
 
 	public static J360Datasource getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	//DatabaseShard/TableBeanShard，通过注入的方式进行，AbstractLoadBalance
+	//默认注入的是ConsistentHashLoadBalance
+	//注入DatabaseShard/TableBeanShard可以干掉
 
 	/**
 	 * 根据表的字段名
@@ -64,8 +76,9 @@ public class J360Datasource {
 		for(String database:databases){
 			dataBaseSchemas.add(datasourceSchema.getMap().get(database));
 		}
-		DatabaseShard baseSchemaHashShard=new DatabaseShard(dataBaseSchemas);
-		return baseSchemaHashShard.getShardInfo(tableNameBean.getTablefieldvalue());
+		//DatabaseShard baseSchemaHashShard=new DatabaseShard();
+		//return baseSchemaHashShard.getShardInfo(tableNameBean.getTablefieldvalue());
+		return loadBalance.select(dataBaseSchemas,tableNameBean.getTablefieldvalue());
 	}
 
 	/**
@@ -93,7 +106,16 @@ public class J360Datasource {
 			tableBean.setPrefixname(result.getPrefixname()+i);
 			tableBeans.add(tableBean);
 		}
-		TableBeanShard beanHashShard=new TableBeanShard(tableBeans);
-		return beanHashShard.getShardInfo(tableNameBean.getTablefieldvalue());
+
+		return loadBalance.select(tableBeans,tableNameBean.getTablefieldvalue());
+	}
+
+
+	public AbstractLoadBalance getLoadBalance() {
+		return loadBalance;
+	}
+
+	public void setLoadBalance(AbstractLoadBalance loadBalance) {
+		this.loadBalance = loadBalance;
 	}
 }

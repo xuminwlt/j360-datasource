@@ -14,6 +14,7 @@ import me.j360.datasource.distributed.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with j360-datasource -> me.j360.datasource.distributed.spring.datasource.
