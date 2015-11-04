@@ -3,6 +3,7 @@
  */
 package me.j360.datasource.distributed.readwritestragy;
 
+import me.j360.datasource.distributed.core.loadbalance.RoundRobinLoadBalance;
 import me.j360.datasource.distributed.spring.config.schema.DatasourceSchema;
 
 import java.util.List;
@@ -15,7 +16,10 @@ import java.util.List;
  * 说明：数据源权重轮训算法RR，获取本次最佳数据源
  */
 public class DatasourceRobin {
-	
+    public static DatasourceSchema GetBestDatasourceSchema(List<DatasourceServer> commonDatasourceSchemas) {
+        RoundRobinLoadBalance rr = new RoundRobinLoadBalance();
+        return  rr.select2(commonDatasourceSchemas).getCommonDatasourceSchema();
+    }
 	public static DatasourceSchema GetBestCommonDatasourceSchema(List<DatasourceServer> commonDatasourceSchemas) {
 		DatasourceServer server = null;
 		DatasourceServer best = null;

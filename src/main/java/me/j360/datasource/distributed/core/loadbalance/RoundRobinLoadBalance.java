@@ -31,14 +31,14 @@ public class RoundRobinLoadBalance extends AbstractLoadBalance {
         return null;
     }
 
-    public DatasourceServer select2(List<DatasourceServer> shards, String seed) {
+    public DatasourceServer select2(List<DatasourceServer> shards) {
         if (shards == null || shards.size() == 0) {
             return null;
         }
         if (shards.size() == 1) {
             return shards.get(0);
         }
-        return doSelect2(shards, seed);
+        return doSelect2(shards);
     }
 
     protected int getWeight(DatasourceServer shard) {
@@ -57,7 +57,7 @@ public class RoundRobinLoadBalance extends AbstractLoadBalance {
     }
 
 
-    protected DatasourceServer doSelect2(List<DatasourceServer> shards, String seed) {
+    protected DatasourceServer doSelect2(List<DatasourceServer> shards) {
         int length = shards.size();
         int maxWeight = 0; // 最大权重
         int minWeight = Integer.MAX_VALUE; // 最小权重
@@ -68,6 +68,7 @@ public class RoundRobinLoadBalance extends AbstractLoadBalance {
             minWeight = Math.min(minWeight, weight); // 累计最小权重
         }
 
+        String seed = "DatasourceServer-key";
         if (maxWeight > 0 && minWeight < maxWeight) { // 权重不一样
             AtomicPositiveInteger weightSequence = weightSequences.get(seed);
             if (weightSequence == null) {

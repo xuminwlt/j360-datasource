@@ -46,11 +46,11 @@ public class MultipleDatasourceTypeTransactionInterceptor extends AbstractDataso
             if(invocation.getMethod().getName().startsWith(queryMethoedStart)){
                 Map<String,List<DatasourceServer>> commonDatasourceServerMap = writeReadDataSourceSchema.groupDataSourceByType();
                 List<DatasourceServer> commonDatasourceServers=commonDatasourceServerMap.get("read");
-                commonDatasourceSchema= DatasourceRobin.GetBestCommonDatasourceSchema(commonDatasourceServers);
+                commonDatasourceSchema= DatasourceRobin.GetBestDatasourceSchema(commonDatasourceServers);
             }else if(invocation.getMethod().getName().startsWith(operateMethodStart)){
                 Map<String,List<DatasourceServer>> commonDatasourceServerMap = writeReadDataSourceSchema.groupDataSourceByType();
                 List<DatasourceServer> commonDatasourceServers=commonDatasourceServerMap.get("write");
-                commonDatasourceSchema=DatasourceRobin.GetBestCommonDatasourceSchema(commonDatasourceServers);
+                commonDatasourceSchema=DatasourceRobin.GetBestDatasourceSchema(commonDatasourceServers);
             }
             params= DatasourceRoute.getInstance().doDataSourceRoute(commonDatasourceSchema, params);
             invocation.getArguments()[0] = params;

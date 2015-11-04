@@ -6,9 +6,15 @@ j360-datasource
 - Maven 3.2+
 - Spring 4.1.3
 
-## 1.0介绍 ##
+
+## 1.0功能介绍 ##
 - 当前版本说明
-    - 分表分库、读写分离应用层框架
+    - 分表：基于配置的count通过loadbalance算法映射到对应的table_0 table_1 ... table_{count}
+    - 分库：多数据源切换，通过loadbalance算法映射到对应的datasource
+    - 读写分离：基于配置的write数据源、read数据库类型，匹配到对应的数据源类型
+    - 多服务器轮训：基于lb算法中的RoundRobin算法轮训多个数据源分流，此处和分库最大的区别在于服务器的高可用分流
+- jdbc框架测试：ibatis
+    
 
 ## 2.0升级说明 ##
 - 后续版本升级方向
